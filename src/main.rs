@@ -1,28 +1,13 @@
 extern crate rand;
 use rand::Rng;
-//use std::{thread, time};
+use std::{thread, time};
 
-fn look_cool(guess: &String) {
-    let hello_world = vec![
-        'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!',
-    ];
-    let mut count = 2000;
-
-    while count > 0 {
-        clear_term(hello_world.len());
-        for mut item in guess.chars().enumerate() {
-            let index = item.0;
-            let mut character = item.1;
-            if character != hello_world[index] {
-                let guess_char = get_guess();
-                character = guess_char.to_owned();
-            }
-        }
-
-        print!("{}", guess);
-        count -= 1;
+fn look_cool(input: &String, count: usize) {
+    for _ in 0..count {
+        sleep(3);
+        print!("{}", input);
+        clear_term(input.len());
     }
-    clear_term(hello_world.len());
 }
 
 fn get_guess() -> char {
@@ -36,6 +21,11 @@ fn clear_term(clear_length: usize) {
     }
 }
 
+fn sleep(time_in_ms: u64) {
+    let wait_time = time::Duration::from_millis(time_in_ms);
+    thread::sleep(wait_time);
+}
+
 fn main() {
     let hello_world = vec![
         'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', '!',
@@ -44,6 +34,7 @@ fn main() {
 
     while guess != hello_world {
         clear_term(hello_world.len());
+
         for item in guess.iter_mut().enumerate() {
             let index = item.0;
             let character = item.1;
@@ -55,8 +46,10 @@ fn main() {
         }
 
         let final_string: String = guess.iter().cloned().collect();
-        look_cool(&final_string);
+        look_cool(&final_string, 10);
         print!("{}", final_string);
+
+        sleep(5);
     }
 
     print!("\n");
